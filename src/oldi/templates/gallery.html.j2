@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>OldI — tune gallery</title>
+  <style>
+    body { font-family: -apple-system, system-ui, sans-serif; margin: 2em; }
+    h1 { border-bottom: 2px solid #000; }
+    h2 { margin-top: 1.5em; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border-bottom: 1px solid #ddd; padding: 0.5em; vertical-align: top; }
+    th { background: #f5f5f5; text-align: left; }
+    tr.review { background: #fff8e1; }
+    tr.failed { background: #ffebee; }
+    img.thumb { max-width: 240px; max-height: 120px; }
+    .badge { display: inline-block; padding: 1px 6px; border-radius: 4px; font-size: 0.8em; color: #fff; }
+    .badge.clarity { background: #1976d2; }
+    .badge.audiveris { background: #6a1b9a; }
+    .badge.review { background: #f57c00; }
+    .badge.ok { background: #2e7d32; }
+    .badge.failed { background: #c62828; }
+    a { color: #0366d6; }
+    .summary { margin: 1em 0; padding: 0.8em 1em; background: #eef; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <h1>OldI — tune gallery</h1>
+  <div class="summary">
+    Total tunes: {{ total }} · OK: {{ n_ok }} · Review: {{ n_review }} · Failed: {{ n_failed }}
+  </div>
+  {% for book, pages in by_book.items() %}
+    <h2>{{ book }}</h2>
+    <table>
+      <thead>
+        <tr><th>page</th><th>#</th><th>title</th><th>key</th><th>engine</th><th>status</th><th>source crop</th><th>rendered</th><th>artifacts</th></tr>
+      </thead>
+      <tbody>
+      {% for t in pages %}
+        <tr class="{{ t.status }}">
+          <td>{{ t.page }}</td>
+          <td>{{ t.idx }}</td>
+          <td>
+            <strong>{{ t.title }}</strong>
+            {% if t.title_gaelic and t.title_gaelic != t.title %}<br><em>{{ t.title_gaelic }}</em>{% endif %}
+          </td>
+          <td>{{ t.key }}</td>
+          <td><span class="badge {{ t.engine }}">{{ t.engine }}</span></td>
+          <td><span class="badge {{ t.status }}">{{ t.status }}</span>{% if t.error %}<br><small>{{ t.error }}</small>{% endif %}</td>
+          <td>{% if t.source_crop %}<a href="{{ t.source_crop }}"><img class="thumb" src="{{ t.source_crop }}"></a>{% endif %}</td>
+          <td>
+            {% if t.html_path %}<a href="{{ t.html_path }}"><strong>winner</strong></a>{% endif %}
+            {% if t.clarity_html %} · <a href="{{ t.clarity_html }}">Clarity</a>{% endif %}
+            {% if t.audiveris_html %} · <a href="{{ t.audiveris_html }}">Audiveris</a>{% endif %}
+            {% if t.pdf_path %}<br>PDF: <a href="{{ t.pdf_path }}">LilyPond</a>{% endif %}
+          </td>
+          <td>{% if t.xml_path %}<a href="{{ t.xml_path }}">MusicXML</a>{% endif %}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  {% endfor %}
+</body>
+</html>

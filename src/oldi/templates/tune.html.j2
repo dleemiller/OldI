@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>{{ title }} — {{ book }} p{{ page }}{% if engine %} ({{ engine }}){% endif %}</title>
+  <style>
+    body { font-family: -apple-system, system-ui, sans-serif; margin: 2em; max-width: 900px; }
+    header { border-bottom: 1px solid #ccc; padding-bottom: 0.5em; margin-bottom: 1em; }
+    .meta { color: #666; font-size: 0.9em; }
+    .score { margin: 1em 0; }
+    nav a { margin-right: 1em; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>{{ title }}</h1>
+    <div class="meta">
+      {{ book }} · page {{ page }} · tune {{ idx }}
+      {% if key %}· key: {{ key }}{% endif %}
+      {% if engine %}· engine: {{ engine }}{% endif %}
+    </div>
+    <nav>
+      <a href="{{ musicxml_rel }}">MusicXML</a>
+      {% if pdf_rel %}<a href="{{ pdf_rel }}">LilyPond PDF</a>{% endif %}
+      {% if crop_rel %}<a href="{{ crop_rel }}">source crop</a>{% endif %}
+    </nav>
+  </header>
+  <div class="score">{{ svg | safe }}</div>
+</body>
+</html>
