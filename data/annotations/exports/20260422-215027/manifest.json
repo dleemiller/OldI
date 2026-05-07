@@ -1,0 +1,17 @@
+{
+  "exported_at": "2026-04-22T21:50:28",
+  "host": "http://192.168.0.125:8080",
+  "tasks": [
+    {
+      "id": 3,
+      "name": "batch_004 \u2014 all classes, 3e-5 pretrain",
+      "project_id": 1,
+      "updated": "2026-04-23T03:47:40.469703Z",
+      "status": "annotation",
+      "mode": "annotation",
+      "jobs_state": "annotation",
+      "n_annotations_in_export": 1347,
+      "export_dir": "data/annotations/exports/20260422-215027/task-3-batch_004___all_classes__3e-5_pretrain"
+    }
+  ]
+}

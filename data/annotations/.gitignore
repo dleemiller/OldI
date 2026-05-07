@@ -1,0 +1,3 @@
+# Keep exports under git
+!exports/
+exports/**/coco.zip
