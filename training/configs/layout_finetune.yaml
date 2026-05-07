@@ -1,0 +1,28 @@
+# Phase B — fine-tune on hand-annotated tune-book pages.
+# All 13 classes may have annotations here.
+
+checkpoint: training/checkpoints/pretrain_v1/best_by_map_13cls
+
+train_coco: data/annotations/round_3/train_coco.json
+train_images_root: data/annotations/round_3/images
+val_coco: data/annotations/round_3/val_coco.json
+val_images_root: data/annotations/round_3/images
+
+output_dir: training/checkpoints/finetune_round_3
+
+# 14 training pages with corrected measures. Still starting from Phase A
+# 13cls to avoid path dependence on previous round's class heads.
+num_epochs: 80
+learning_rate: 3.0e-5      # matches the winning Phase A rate
+learning_rate_backbone: 3.0e-6
+weight_decay: 1.0e-4
+batch_size: 4
+num_workers: 4
+
+augmentation_phase: finetune  # light; real pages already have the artefacts
+
+freeze_backbone_epochs: 0
+
+eval_every_epochs: 1
+save_every_epochs: 2
+early_stop_patience: 5
