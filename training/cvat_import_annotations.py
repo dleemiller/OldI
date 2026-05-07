@@ -14,9 +14,13 @@ task-3-batch_004___all_classes__3e-5_pretrain/annotations/instances_default.json
 from __future__ import annotations
 
 import argparse
+import sys
 from pathlib import Path
 
-from training.cvat_setup import _login, _upload_annotations
+REPO = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(REPO))
+
+from training.cvat_setup import _login, _upload_annotations  # noqa: E402
 
 
 def main() -> None:
