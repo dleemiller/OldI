@@ -81,10 +81,14 @@ def _get_or_create_project(s: requests.Session, host: str, name: str) -> int:
 
 
 def _create_task(s: requests.Session, host: str, project_id: int,
-                 name: str, images: list[Path]) -> int:
+                 name: str, images: list[Path],
+                 segment_size: int | None = None) -> int:
+    body: dict[str, Any] = {"name": name, "project_id": project_id}
+    if segment_size:
+        body["segment_size"] = segment_size
     r = s.post(
         f"{host}/api/tasks",
-        json={"name": name, "project_id": project_id},
+        json=body,
         timeout=30,
     )
     r.raise_for_status()
@@ -182,6 +186,9 @@ def main() -> None:
                     help="Batch dir containing images/ and annotations.json")
     ap.add_argument("--task-name", default=None,
                     help="Override task name (defaults to batch dir name).")
+    ap.add_argument("--segment-size", type=int, default=None,
+                    help="Split the task into jobs of this many frames. "
+                         "Omit for the CVAT default (one job per task).")
     args = ap.parse_args()
 
     images_dir = args.batch / "images"
@@ -198,7 +205,8 @@ def main() -> None:
 
     s = _login(args.host, args.user, args.password)
     pid = _get_or_create_project(s, args.host, args.project_name)
-    tid = _create_task(s, args.host, pid, task_name, images)
+    tid = _create_task(s, args.host, pid, task_name, images,
+                       segment_size=args.segment_size)
     _upload_annotations(s, args.host, tid, coco_path)
     print(f"\ndone — open {args.host}/tasks/{tid} to annotate")
 
